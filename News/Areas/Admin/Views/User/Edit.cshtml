@@ -1,0 +1,71 @@
+﻿@model News.Models.User
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<br /><br />
+
+<h2>Edit User</h2>
+<hr />
+<div class="container">
+    <form asp-action="Edit" method="post" enctype="multipart/form-data">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <div class="form-group row">
+            <div class="col-2">
+                <label asp-for="Name"></label>
+            </div>
+            <div class="col-10">
+                <input asp-for="Name" class="form-control" />
+            </div>
+            <span asp-validation-for="Name" class="table-danger"></span>
+        </div>
+        <div class="form-group row">
+            <div class="col-2">
+                <label asp-for="PhoneNumber"></label>
+            </div>
+            <div class="col-10">
+                <input asp-for="PhoneNumber" class="form-control" />
+            </div>
+            <span asp-validation-for="PhoneNumber" class="table-danger"></span>
+        </div>
+        <div class="form-group row">
+            <div class="col-2">
+                <label asp-for="Address"></label>
+            </div>
+            <div class="col-10">
+                <input asp-for="Address" class="form-control" />
+            </div>
+            <span asp-validation-for="Address" class="table-danger"></span>
+        </div>
+        <div class="form-group row">
+            <div class="col-2">
+                <label asp-for="Picture"></label>
+            </div>
+            <div class="col-10">
+                <input asp-for="Picture" class="form-control" type="file" name="files"/>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-2">
+                <label asp-for="isAdmin"></label>
+            </div>
+            <div class="col-10">
+                <input asp-for="isAdmin" type="checkbox" />
+            </div>
+            <span asp-validation-for="isAdmin" class="table-danger"></span>
+        </div>
+        <div class="form-group offset-5">
+            <input type="submit" value="Update" class="btn btn-primary" />
+            <a asp-action="Index" class="btn btn-success">Back to List</a>
+        </div>
+    </form>
+</div>
+@section Scripts
+{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+

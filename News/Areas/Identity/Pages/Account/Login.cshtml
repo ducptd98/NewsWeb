@@ -1,0 +1,77 @@
+﻿@page
+@model LoginModel
+
+@{
+    ViewData["Title"] = "Log in";
+    Layout = "Customer/_LayoutCustomer";
+}
+
+<!-- ##### Breadcrumb Area Start ##### -->
+<section class="breadcrumb-area bg-img bg-overlay" style="background-image: url(~/img/bg-img/40.jpg);">
+    <div class="container h-100">
+        <div class="row h-100 align-items-center">
+            <div class="col-12">
+                <div class="breadcrumb-content">
+                    <h2>Login</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- ##### Breadcrumb Area End ##### -->
+<!-- ##### Login Area Start ##### -->
+<div class="mag-login-area py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-12 col-lg-6">
+                <div class="login-content bg-white p-30 box-shadow">
+                    <!-- Section Title -->
+                    <div class="section-heading">
+                        <h5>Great to have you back!</h5>
+                    </div>
+
+                    <form id="account" method="post">
+                        <div class="form-group">
+                            <label asp-for="Input.Email"></label>
+                            <input asp-for="Input.Email" class="form-control" id="exampleInputEmail1" type="email"/>
+                            <span asp-validation-for="Input.Email" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Input.Password"></label>
+                            <input asp-for="Input.Password" class="form-control" id="exampleInputPassword1" type="password"/>
+                            <span asp-validation-for="Input.Password" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <div class="custom-control custom-checkbox mr-sm-2">
+                                <input asp-for="Input.RememberMe" type="checkbox" class="custom-control-input" id="customControlAutosizing"/>
+                                <label asp-for="Input.RememberMe" class="custom-control-label" for="customControlAutosizing"></label>
+                            </div>
+                            
+                        </div>
+                        <button type="submit" style="background-color: #ED3974;" class="btn text-light mag-btn mt-30">Login</button>
+                    </form>
+                    <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                        <div>
+                            <p>
+                                @foreach (var provider in Model.ExternalLogins)
+                                {
+                                <button type="submit" class=" btn btn-primary text-light mag-btn mt-30" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
+                                }
+                            </p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ##### Login Area End ##### -->
+
+
+
+
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

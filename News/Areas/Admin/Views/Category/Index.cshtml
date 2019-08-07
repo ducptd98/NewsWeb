@@ -1,0 +1,67 @@
+﻿@model IEnumerable<News.Models.Category>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<br /><br />
+<div class="container">
+    <div class="row">
+        <div class="col-10">
+            <h2 class="text-info">Category List</h2>
+        </div>
+        <div class="col-2">
+            <a asp-action="Create" class="btn btn-info"><i class="fa fa-plus"></i> &nbsp; New Category</a>
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <table class="table table-striped">
+            <tbody>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(m => m.Name)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(m => m.Description)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(m => m.CreatedDate)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(m => m.ModifiedDate)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(m => m.ShowOnHome)
+                    </th>
+                    <th></th>
+                    <th></th>
+                </tr>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(m => item.Name)
+                        </td>
+                        <td>
+                            @Html.Raw(item.Description)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(m => item.CreatedDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(m => item.ModifiedDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(m => item.ShowOnHome)
+                        </td>
+                        <td>
+                            <partial name="_TableButtonPartial" model="@item.Id"/>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+

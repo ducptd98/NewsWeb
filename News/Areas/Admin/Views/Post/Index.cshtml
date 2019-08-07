@@ -1,0 +1,75 @@
+﻿@model IEnumerable<News.Models.Post>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<br /><br />
+<div class="container">
+    <div class="row">
+        <div class="col-10">
+            <h2 class="text-info">Post List</h2>
+        </div>
+        <div class="col-2">
+            <a asp-action="Create" class="btn btn-info"><i class="fa fa-plus"></i> &nbsp; New Post</a>
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <table class="table table-striped">
+            <tbody>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(m => m.Name)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(m => m.Category)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(m => m.Content)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(m => m.CreateOn)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(m => m.ShowOnHome)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(m => m.UpComming)
+                    </th>
+                    <th></th>
+                    <th></th>
+                </tr>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(m => item.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(m => item.Category.Name)
+                        </td>
+                        <td>
+                            @Html.Raw(item.Content)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(m => item.CreateOn)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(m => item.ShowOnHome)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(m => item.UpComming)
+                        </td>
+                        <td>
+                            <partial name="_TableButtonPartial" model="@item.Id" />
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+

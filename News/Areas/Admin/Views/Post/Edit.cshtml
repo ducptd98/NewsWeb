@@ -1,0 +1,171 @@
+﻿@using ElectronicStore.Extensions
+@model News.Models.VIewModels.PostViewModel
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<br /><br />
+
+<h2>Edit Post</h2>
+<hr />
+<div class="container">
+    <form asp-action="Edit" method="post" enctype="multipart/form-data">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <input hidden asp-for="Post.Id" />
+        <div class="form-group row">
+            <div class="col-2">
+                <label asp-for="Post.Name"></label>
+            </div>
+            <div class="col-10">
+                <input asp-for="Post.Name" class="form-control" />
+            </div>
+            <span asp-validation-for="Post.Name" class="table-danger"></span>
+        </div>
+        <div class="form-group row">
+            <div class="col-2">
+                <label asp-for="Post.Category"></label>
+            </div>
+            <div class="col-10">
+                <select asp-for="Post.CategoryId" asp-items="@Model.Categories.ToSelectListItem(Model.Post.CategoryId)" class="form-control"></select>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-2">
+                <label asp-for="Post.Image"></label>
+            </div>
+            <div class="col-10">
+                <input asp-for="Post.Image" class="form-control" type="file" name="files" />
+            </div>
+            <span asp-validation-for="Post.Image" class="table-danger"></span>
+        </div>
+        <div class="form-group row">
+            <div class="col-2">
+                <label asp-for="Post.Title"></label>
+            </div>
+            <div class="col-10">
+                <textarea asp-for="Post.Title" class="form-control"></textarea>
+            </div>
+            <span asp-validation-for="Post.Title" class="table-danger"></span>
+        </div>
+        <div class="form-group row">
+            <div class="col-2">
+                <label asp-for="Post.ShortDescription"></label>
+            </div>
+            <div class="col-10">
+                <textarea asp-for="Post.ShortDescription" class="form-control"></textarea>
+            </div>
+            <span asp-validation-for="Post.ShortDescription" class="table-danger"></span>
+        </div>
+        <div class="form-group row">
+            <div class="col-2">
+                <label asp-for="Post.Content"></label>
+            </div>
+            <div class="col-10">
+                <textarea asp-for="Post.Content" class="form-control" id="content" name="content" data-toolbar="full"></textarea>
+            </div>
+            <span asp-validation-for="Post.Content" class="table-danger"></span>
+        </div>
+        <div class="form-group row">
+            <div class="col-2">
+                <label asp-for="Post.CreateOn"></label>
+            </div>
+            <div class="col-10">
+                <input asp-for="Post.CreateOn" type="text" readonly value="" id="created" class=" form-control" />
+            </div>
+            <span asp-validation-for="Post.CreateOn" class="table-danger"></span>
+        </div>
+        <div class="form-group row">
+            <div class="col-2">
+                <label asp-for="Post.ModifiedOn"></label>
+            </div>
+            <div class="col-10">
+                <input asp-for="Post.ModifiedOn" readonly type="text" value="" id="modified" class="form-control" />
+            </div>
+            <span asp-validation-for="Post.ModifiedOn" class="table-danger"></span>
+        </div>
+        <div class="form-group row">
+            <div class="col-2">
+                <label asp-for="Post.ShowOnHome"></label>
+            </div>
+            <div class="col-10">
+                <input asp-for="Post.ShowOnHome" type="checkbox" />
+            </div>
+            <span asp-validation-for="Post.ShowOnHome" class="table-danger"></span>
+        </div>
+        <div class="form-group row">
+            <div class="col-2">
+                <label asp-for="Post.UpComming"></label>
+            </div>
+            <div class="col-10">
+                <input asp-for="Post.UpComming" type="checkbox" />
+            </div>
+            <span asp-validation-for="Post.UpComming" class="table-danger"></span>
+        </div>
+        <div class="form-group offset-5">
+            <input type="submit" value="Update" class="btn btn-primary" />
+            <a asp-action="Index" class="btn btn-success">Back to List</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        $(document).ready(function () {
+            var d = new Date();
+
+            var month = d.getMonth() + 1;
+            var day = d.getDate();
+
+            var output = d.getFullYear() + '/' +
+                (month < 10 ? '0' : '') + month + '/' +
+                (day < 10 ? '0' : '') + day;
+
+            var h = d.getHours();
+            var m = d.getMinutes();
+            var values = h + ":" + m;
+
+            $("#created").attr('value', function () { return output + " " + values });
+            $("#modified").attr('value', output + " " + values);
+
+
+            $.ajax({
+                url: 'https://api.github.com/emojis',
+                async: false 
+            }).then(function(data) {
+                window.emojis = Object.keys(data);
+                window.emojiUrls = data; 
+            });;
+
+            $("#content").summernote({
+                height: 100,
+                hint: {
+                    match: /:([\-+\w]+)$/,
+                    search: function (keyword, callback) {
+                        callback($.grep(emojis, function (item) {
+                            return item.indexOf(keyword)  === 0;
+                        }));
+                    },
+                    template: function (item) {
+                        var content = emojiUrls[item];
+                        return '<img src="' + content + '" width="20" /> :' + item + ':';
+                    },
+                    content: function (item) {
+                        var url = emojiUrls[item];
+                        if (url) {
+                            return $('<img />').attr('src', url).css('width', 20)[0];
+                        }
+                        return '';
+                    }
+                }
+            });
+        });
+
+    </script>
+}>
+
+

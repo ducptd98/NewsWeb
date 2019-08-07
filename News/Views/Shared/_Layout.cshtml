@@ -1,0 +1,119 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+@{
+    var Name = "";
+    if (SignInManager.IsSignedIn(User))
+    {
+        var userName = UserManager.GetUserName(User);
+        var NameData = userName.Split("@");
+        Name = NameData[0];
+    }
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - ContructorNews</title>
+
+
+
+    <!-- Favicon -->
+    <link rel="icon" href="~/img/core-img/favicon.ico">
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/lib/summernote/summernote-bs4.css" />
+    <script src="https://kit.fontawesome.com/48bb692534.js"></script>
+
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container">
+                <a class="navbar-brand" asp-area="Admin" asp-controller="HomeAdmin" asp-action="Index">News</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                    @*Display name*@
+                    <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new {area = "Customer"})" method="post" id="logoutForm">
+                        @*@if (User.IsInRole(SD.SuperAdminEndUser) || User.IsInRole(SD.ShippingUser))
+                            {
+                                <a asp-area="Admin" asp-controller="HomeAdmin" asp-action="Index"><span><i class="fas fa-tools" style="color: black;"></i></span></a> Hello @Name!
+                            }*@
+                        <a asp-area="Identity" class="btn btn-dark" asp-page="/Account/Manage/Index" title="Manage">Hello @Name!</a>
+                        <button type="submit" class="btn btn-dark">Logout</button>
+                    </form>
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="Admin" asp-controller="HomeAdmin" asp-action="Index">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="Admin" asp-controller="Category" asp-action="Index">Category</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="Admin" asp-controller="Post" asp-action="Index">Post</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="Admin" asp-controller="User" asp-action="Index">User</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="Admin" asp-controller="Slide" asp-action="Index">Slide</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Dropdown
+                            </a>
+                            <div class="dropdown-menu m-2" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="#">Action</a>
+                                <a class="dropdown-item" href="#">Another action</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#">Something else here</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <partial name="_CookieConsentPartial" />
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2019 - News - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
+
+
+    <!-- ##### All Javascript Script ##### -->
+    <!-- jQuery-2.2.4 js -->
+    <script src="~/js/jquery/jquery-2.2.4.min.js"></script>
+    <!-- Popper js -->
+    <script src="~/js/bootstrap/popper.min.js"></script>
+    <!-- Bootstrap js -->
+    <script src="~/js/bootstrap/bootstrap.min.js"></script>
+    <!-- All Plugins js -->
+    <script src="~/js/plugins/plugins.js"></script>
+    <!-- Active js -->
+    <script src="~/js/active.js"></script>
+    <script src="~/lib/summernote/summernote-bs4.js"></script>
+
+    <script src="lib/summernote/plugin/specialchars/summernote-ext-specialchars.js"></script>
+
+    <script src="~/lib/summernote/plugin/databasic/summernote-ext-databasic.js"></script>
+
+    <script src="~/lib/summernote/plugin/hello/summernote-ext-hello.js"></script>
+    <script src="~/lib/summernote/plugin/summernote-emoji/summernote-emoji.js"></script>
+    <script src="~/lib/summernote/plugin/summernote-fontawesome/summernote-fontawesome.js"></script>
+
+
+@RenderSection("Scripts", required: false)
+</body>
+</html>
