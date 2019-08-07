@@ -18,6 +18,7 @@ using Microsoft.AspNetCore.Authentication.Facebook;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using News.Data;
 using News.Services;
 
 namespace ContructorNews
@@ -42,7 +43,8 @@ namespace ContructorNews
             });
             services.AddScoped<IFacebookClient, FacebookClient>();
             services.AddScoped<IFacebookService, FacebookService>();
-            
+
+            services.AddScoped<IDbInitializer, DBInitializer>();
 
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
@@ -73,7 +75,7 @@ namespace ContructorNews
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IDbInitializer dbInitializer)
         {
             if (env.IsDevelopment())
             {
@@ -87,6 +89,8 @@ namespace ContructorNews
                 app.UseHsts();
             }
             app.UseAuthentication();
+
+            dbInitializer.Initialize();
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();

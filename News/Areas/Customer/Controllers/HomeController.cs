@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Net;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using ContructorNews.Data;
@@ -86,6 +87,12 @@ namespace ContructorNews.Controllers
                 postFromDb.CountView++;
                 _db.SaveChanges();
             }
+
+            var userid = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            ViewData["User"] = _db.Users.Where(u => u.Id == userid).SingleOrDefault();
+
+
+
 
             var lstParentComment = _db.ParentComments.Include(pc=>pc.Post)
                 .Include(pc=>pc.User).Where(pc => pc.PostId == id).OrderByDescending(d=>d.DateTime).ToList();
@@ -174,19 +181,10 @@ namespace ContructorNews.Controllers
         }
 
 
-        public IActionResult Comments(Post post, string sortOrder)
+        public IActionResult AddComments(long postId)
         {
-            ViewBag.CurrentSort = sortOrder;
-            ViewBag.DateSortParam = String.IsNullOrEmpty(sortOrder) ? "date_asc" : "";
-            ViewBag.BestSortParam = sortOrder == "Best" ? "best_desc" : "Best";
 
-            var lstParentComment = _db.ParentComments.Include(pc => pc.Post)
-                .Include(pc => pc.User).Where(pc => pc.PostId == post.Id).OrderByDescending(d=>d.DateTime).ToList();
-            foreach (var parentComment in lstParentComment)
-            {
-                if(parentComment.ChildComments != null) parentComment.ChildComments.Clear();
-                
-            }
+            return RedirectToAction("SinglePost", postId);
         }
     }
 }
